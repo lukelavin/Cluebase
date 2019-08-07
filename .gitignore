@@ -1,0 +1,4 @@
+env
+__pycache__
+docker-compose.yml
+flask/app/oldinit.py

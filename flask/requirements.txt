@@ -1,0 +1,5 @@
+Flask==1.0.2
+Flask-RESTful==0.3.7
+Flask-SQLAlchemy==2.3.2
+psycopg2-binary==2.7.7
+Flask-Testing==0.7.1
