@@ -24,8 +24,10 @@ def create_app(script_info=None):
     db.init_app(app)
 
     # register blueprints
-    from app.api.resources import resources_blueprint
-    app.register_blueprint(resources_blueprint)
+    from app.api.endpoints.seasons import seasons_blueprint
+    app.register_blueprint(seasons_blueprint)
+    from app.api.endpoints.util import util_blueprint
+    app.register_blueprint(util_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor

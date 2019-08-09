@@ -5,8 +5,8 @@ from sqlalchemy import exc
 from app import db
 from app.api.models import Seasons
 
-resources_blueprint = Blueprint('resources', __name__)
-api = Api(resources_blueprint)
+seasons_blueprint = Blueprint('seasons', __name__)
+api = Api(seasons_blueprint)
 
 class SeasonsList(Resource):
     def get(self):
