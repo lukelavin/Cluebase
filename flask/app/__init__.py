@@ -31,6 +31,8 @@ def create_app(script_info=None):
     app.register_blueprint(seasons_blueprint)
     from app.api.endpoints.util import util_blueprint
     app.register_blueprint(util_blueprint)
+    from app.api.endpoints.contestants import contestants_blueprint
+    app.register_blueprint(contestants_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor
