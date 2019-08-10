@@ -3,7 +3,7 @@ from flask import Blueprint, request
 from flask_restful import Resource, Api
 from sqlalchemy import exc
 
-from app import db
+from app import db, cache
 from app.api.models import Seasons
 
 start_time = datetime.now()
@@ -17,6 +17,7 @@ class Index(Resource):
 
 
 class Uptime(Resource):
+    @cache.cached(timeout=5)
     def get(self):
         return {
             'uptime': str(datetime.now() - start_time)

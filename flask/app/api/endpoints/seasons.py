@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_restful import Resource, Api
 from sqlalchemy import exc
 
-from app import db
+from app import db, cache
 from app.api.models import Seasons
 
 seasons_blueprint = Blueprint('seasons', __name__)

@@ -5,6 +5,9 @@ class BaseConfig:
     """Base configuration"""
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CACHE_TYPE = "redis"
+    CACHE_DEFAULT_TIMEOUT = 300
+    CACHE_REDIS_HOST = "redis"
 
 
 class DevelopmentConfig(BaseConfig):

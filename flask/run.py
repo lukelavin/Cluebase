@@ -1,8 +1,4 @@
-# services/users/manage.py
-
-
 import sys
-import unittest
 
 from flask.cli import FlaskGroup
 
