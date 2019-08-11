@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import alabaster
 
 # -- Project information -----------------------------------------------------
 
@@ -52,3 +53,24 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_theme_options = {
+    'description': 'A "Jeopardy!" API',
+    'github_button': False,
+    'github_banner': True,
+    'github_user': 'lukelavin',
+    'github_repo': 'cluebase',
+}
+
+# Add any paths that contain custom themes here, relative to this directory.
+html_theme_path = [alabaster.get_path()]
+
+# Custom sidebar templates, maps document names to template names.
+html_sidebars = {
+    '**': [
+        'about.html',
+        'localtoc.html',
+        'relations.html',
+        'searchbox.html',
+    ]
+}

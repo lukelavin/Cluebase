@@ -27,12 +27,16 @@ def create_app(script_info=None):
     cache.init_app(app)
 
     # register blueprints
-    from app.api.endpoints.seasons import seasons_blueprint
-    app.register_blueprint(seasons_blueprint)
     from app.api.endpoints.util import util_blueprint
     app.register_blueprint(util_blueprint)
+    from app.api.endpoints.seasons import seasons_blueprint
+    app.register_blueprint(seasons_blueprint)
     from app.api.endpoints.contestants import contestants_blueprint
     app.register_blueprint(contestants_blueprint)
+    from app.api.endpoints.games import games_blueprint
+    app.register_blueprint(games_blueprint)
+    from app.api.endpoints.clues import clues_blueprint
+    app.register_blueprint(clues_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor

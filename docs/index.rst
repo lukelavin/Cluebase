@@ -3,18 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Cluebase's documentation!
+What is Cluebase?
 ====================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Cluebase is an API of all recorded Jeopardy games. Over 5,000 games,
+10,000 contestants, and 350,000 clues are available through Cluebase.
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+General Info
+===============
