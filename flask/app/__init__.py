@@ -37,6 +37,8 @@ def create_app(script_info=None):
     app.register_blueprint(games_blueprint)
     from app.api.endpoints.clues import clues_blueprint
     app.register_blueprint(clues_blueprint)
+    from app.api.endpoints.categories import categories_blueprint
+    app.register_blueprint(categories_blueprint)
 
     # shell context for flask cli
     @app.shell_context_processor

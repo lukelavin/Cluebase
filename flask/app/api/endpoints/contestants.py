@@ -68,7 +68,7 @@ class ContestantsList(Resource):
 
         return {
             'status' : 'success',
-            'contestants': result
+            'data': result
         }, 200
 
 
