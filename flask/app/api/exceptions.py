@@ -16,3 +16,11 @@ class OrderByInvalidError(Exception):
 
 class SortInvalidError(Exception):
     pass
+
+
+class IdNotFoundError(Exception):
+    pass
+
+
+class NameNotFoundError(Exception):
+    pass

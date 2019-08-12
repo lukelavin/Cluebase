@@ -11,22 +11,18 @@ start_time = datetime.now()
 util_blueprint = Blueprint('util', __name__)
 api = Api(util_blueprint)
 
-class Index(Resource):
-    def get(self):
-        return "Hello world!"
-
 
 class Uptime(Resource):
-    @cache.cached(timeout=5)
     def get(self):
         return {
-            'status': success,
+            'status': 'success',
             'uptime': str(datetime.now() - start_time)
         }
 
+
+@util_blueprint.route('/')
 @util_blueprint.route('/docs')
 def docs():
     return redirect('https://cluebase.readthedocs.io', code=302)
 
-api.add_resource(Index, '/')
 api.add_resource(Uptime, '/uptime')

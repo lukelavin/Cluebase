@@ -1,11 +1,15 @@
+import random
+
 from flask import Blueprint, request
 from flask_restful import Resource, Api
+from sqlalchemy import func
 
 from app import db, cache
 from app.api.models import Contestants
 from app.api.exceptions import LimitNotANumberError, LimitOverMaxError, \
                                OffsetNotANumberError, OrderByInvalidError, \
-                               SortInvalidError
+                               SortInvalidError, IdNotFoundError, \
+                               NameNotFoundError
 
 contestants_blueprint = Blueprint('contestants', __name__)
 api = Api(contestants_blueprint)
@@ -52,6 +56,7 @@ def get_contestants(limit, offset, order_by, sort):
         .all()]
 
 # TODO: order by more than one column
+# TODO: search name or notes
 class ContestantsList(Resource):
     def get(self):
         limit = request.args.get('limit', 50)
@@ -71,5 +76,85 @@ class ContestantsList(Resource):
             'data': result
         }, 200
 
+@cache.memoize()
+def get_contestant_by_id(id):
+    result = [contestant.to_json() for contestant in Contestants.query
+                                                    .filter_by(id=id)
+                                                    .all()]
+
+    if len(result) < 1:
+        raise IdNotFoundError('Contestant id not found in database.')
+
+    return result
+
+
+class ContestantById(Resource):
+    def get(self, id):
+        try:
+            result = get_contestant_by_id(id)
+        except Exception as e:
+            return {
+                'status': 'failure',
+                'error': repr(e)
+            }, 404
+
+        return {
+            'status': 'success',
+            'data': result
+        }, 200
+
+
+@cache.memoize()
+def get_contestant_by_name(name):
+    result = [contestant.to_json() for contestant in Contestants.query
+                        .filter(func.lower(Contestants.name) == name)
+                        .all()]
+
+    if len(result) < 1:
+        raise NameNotFoundError('Contestant name not found in database. ' + \
+                                'Make sure to use underscores as spaces.')
+
+    return result
+
+def get_contestant_random():
+    result = []
+    max = Contestants.query.with_entities(func.max(Contestants.id)).first()[0]
+
+    while len(result) < 1:
+        randId = random.randint(1, max)
+        result = [contestant.to_json() for contestant in Contestants.query
+                    .filter_by(id = randId)
+                    .all()]
+
+    return result
+
+
+class ContestantByName(Resource):
+    def get(self, name):
+        if name == 'random':
+            try:
+                result = get_contestant_random()
+            except Exception as e:
+                return {
+                    'status': 'failure',
+                    'error': repr(e)
+                }, 404
+        else:
+            name = name.replace('_', ' ').replace('-', ' ')
+
+            try:
+                result = get_contestant_by_name(name)
+            except Exception as e:
+                return {
+                    'status': 'failure',
+                    'error': repr(e)
+                }, 404
+
+        return {
+            'status': 'success',
+            'data': result
+        }, 200
 
 api.add_resource(ContestantsList, '/contestants')
+api.add_resource(ContestantById, '/contestants/<int:id>')
+api.add_resource(ContestantByName, '/contestants/<string:name>')
