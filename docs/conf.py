@@ -56,8 +56,7 @@ html_static_path = ['_static']
 
 html_theme_options = {
     'description': 'A "Jeopardy!" API',
-    'github_button': False,
-    'github_banner': True,
+    'logo': 'cluebase-icon.png',
     'github_user': 'lukelavin',
     'github_repo': 'cluebase',
 }

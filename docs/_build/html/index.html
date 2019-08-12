@@ -32,11 +32,321 @@
             
   <div class="section" id="what-is-cluebase">
 <h1>What is Cluebase?<a class="headerlink" href="#what-is-cluebase" title="Permalink to this headline">¶</a></h1>
-<p>Cluebase is an API of all recorded Jeopardy games. Over 5,000 games,
+<p>Cluebase is an API of all recorded <em>Jeopardy!</em> games. Over 5,000 games,
 10,000 contestants, and 350,000 clues are available through Cluebase.</p>
+<p>All information was scraped from <a class="reference external" href="https://www.j=archive.com">J-Archive</a>, which is a fan-operated archive of
+<em>Jeopardy!</em> information. The data in Cluebase is only as good as the data in
+J-Archive. If you notice any bad data that you believe should be removed from
+the database, you can contact me at <a class="reference external" href="mailto:llavin&#37;&#52;&#48;purdue&#46;edu">llavin<span>&#64;</span>purdue<span>&#46;</span>edu</a>.</p>
+<p>Cluebase was originally intended to be the backend for a personal project that
+allowed you to practice for the <em>Jeopardy!</em> online exam using previously aired
+clues. If I ever get around to doing that, I’ll leave a link here.</p>
 </div>
 <div class="section" id="general-info">
 <h1>General Info<a class="headerlink" href="#general-info" title="Permalink to this headline">¶</a></h1>
+<p><strong>All of Cluebase’s endpoints return simple JSON representations.</strong></p>
+<p>Here’s an example of how Cluebase may respond to a successful API call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="n">game_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">value</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+      <span class="n">daily_double</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="nb">round</span><span class="p">:</span> <span class="s2">&quot;J!&quot;</span><span class="p">,</span>
+      <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;2 VERBS IN ONE&quot;</span><span class="p">,</span>
+      <span class="n">clue</span><span class="p">:</span> <span class="s2">&quot;To travel by taking rides from passing cars&quot;</span><span class="p">,</span>
+      <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;hitchhike&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>The <code class="docutils literal notranslate"><span class="pre">status</span></code> key will hold either <code class="docutils literal notranslate"><span class="pre">&quot;success&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;failure&quot;</span></code>.</dt><dd><ul class="simple">
+<li><p>If the JSON object returned has a status of <code class="docutils literal notranslate"><span class="pre">&quot;failure&quot;</span></code>, there will
+be no data in the object. <strong>It is your responsibility to check the status
+of each response before attempting to access the data.</strong></p></li>
+<li><p>On failure, instead of returning an object with a <code class="docutils literal notranslate"><span class="pre">data</span></code> value,
+an object with an <code class="docutils literal notranslate"><span class="pre">error</span></code> value will be returned, giving the name
+and message for the error that occurred.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Here’s an example of a failed call to the API:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;failure&quot;</span><span class="p">,</span>
+  <span class="n">error</span><span class="p">:</span> <span class="s2">&quot;LimitNotANumberError(): Limit parameter must be a valid number&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As mentioned, this JSON object returned has no value for <code class="docutils literal notranslate"><span class="pre">data</span></code>,
+and instead holds error information in <code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
+</div>
+<div class="section" id="endpoints">
+<h1>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="clues">
+<h2>Clues<a class="headerlink" href="#clues" title="Permalink to this headline">¶</a></h2>
+<p>Info about /clues endpoints</p>
+</div>
+<div class="section" id="categories">
+<h2>Categories<a class="headerlink" href="#categories" title="Permalink to this headline">¶</a></h2>
+<p>Info about /categories endpoints</p>
+</div>
+<div class="section" id="games">
+<h2>Games<a class="headerlink" href="#games" title="Permalink to this headline">¶</a></h2>
+<p><strong>Game Model</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 7%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>integer</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>episode_num</p></td>
+<td><p>integer</p></td>
+<td><p>The episode number (more descriptive than the id)</p></td>
+</tr>
+<tr class="row-even"><td><p>season_id</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> for the season in which this game aired</p></td>
+</tr>
+<tr class="row-odd"><td><p>air_date</p></td>
+<td><p>String</p></td>
+<td><p>Air date of this episode, in the format of “YYYY-MM-DD”</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>String</p></td>
+<td><p>Special notes about the episode. Includes notable players, tournament details, and other fun tidbits.</p></td>
+</tr>
+<tr class="row-odd"><td><p>contestant1</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> of the first contestant</p></td>
+</tr>
+<tr class="row-even"><td><p>contestant2</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> of the second contestant</p></td>
+</tr>
+<tr class="row-odd"><td><p>contestant3</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> of the third contestant</p></td>
+</tr>
+<tr class="row-even"><td><p>winner</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> of the winner of the game</p></td>
+</tr>
+<tr class="row-odd"><td><p>score1</p></td>
+<td><p>integer</p></td>
+<td><p>The final score of the first contestant</p></td>
+</tr>
+<tr class="row-even"><td><p>score2</p></td>
+<td><p>integer</p></td>
+<td><p>The final score of the second contestant</p></td>
+</tr>
+<tr class="row-odd"><td><p>score3</p></td>
+<td><p>integer</p></td>
+<td><p>The final score of the third contestant</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="contestants">
+<h2>Contestants<a class="headerlink" href="#contestants" title="Permalink to this headline">¶</a></h2>
+<p><strong>Contestant Model</strong></p>
+<p>All JSON objects found in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array for contestant calls will follow this model.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 8%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>integer</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Contestant’s name</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>String</p></td>
+<td><p>Contestant’s intro, including job and hometown</p></td>
+</tr>
+<tr class="row-odd"><td><p>games_played</p></td>
+<td><p>integer</p></td>
+<td><p>Total games played. May be inaccurate if the contestant has played tournament games.</p></td>
+</tr>
+<tr class="row-even"><td><p>total_winnings</p></td>
+<td><p>integer</p></td>
+<td><p>Total winnings. May be inaccurate if the contestant has played tournament games.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Lists all recorded contestants.</p>
+<p><strong>Example output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Ken Jennings&quot;</span><span class="p">,</span>
+      <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;a software engineer from Salt Lake City, Utah&quot;</span><span class="p">,</span>
+      <span class="n">games_played</span><span class="p">:</span> <span class="mi">94</span><span class="p">,</span>
+      <span class="n">total_winnings</span><span class="p">:</span> <span class="mi">2522700</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Possible Query Parameters</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Limits the response to a maximum of &lt;int&gt; contestants.</p></li>
+<li><p><strong>Set to 50 by default.</strong></p></li>
+<li><p><strong>Maximum of 1000.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?offset=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Accesses the data starting from an offset of &lt;int&gt; places.</p></li>
+<li><p>Especially useful in conjunction with limit to achieve
+pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+50 offset 50, etc.).</p></li>
+<li><p><strong>Set to 0 by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?order_by=&lt;field&gt;</span></code></dt><dd><ul>
+<li><p>Orders the data by the given field.</p></li>
+<li><p>For example, <code class="docutils literal notranslate"><span class="pre">?order_by=name</span></code> will alphabetically order the returned
+contestants by their names.</p></li>
+<li><p><strong>Set to id by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> or <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code></dt><dd><ul>
+<li><p>Used to change the direction of order_by results.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> will order the results in ascending order, and <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code>
+will order the results in descending order.</p></li>
+<li><p><strong>Set to ``asc`` by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Example Url</p>
+<blockquote>
+<div><p><a class="reference external" href="https://cluebase.lukelav.in/contestants?limit=10&amp;order_by=total_winnings&amp;sort=desc">https://cluebase.lukelav.in/contestants?limit=10&amp;order_by=total_winnings&amp;sort=desc</a></p>
+</div></blockquote>
+<p>This call will return the top 10 contestants who won the most.</p>
+</div>
+<div class="section" id="contestants-id">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;id&gt;</span></code><a class="headerlink" href="#contestants-id" title="Permalink to this headline">¶</a></h3>
+<p>Information on a specific contestant.</p>
+</div>
+</div>
+<div class="section" id="seasons">
+<h2>Seasons<a class="headerlink" href="#seasons" title="Permalink to this headline">¶</a></h2>
+<p><strong>Season Model</strong></p>
+<p>All JSON objects found in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array for season calls will follow this model.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 9%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>integer</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>season_name</p></td>
+<td><p>String</p></td>
+<td><p>Name of the season (usually “Season [Number]”)</p></td>
+</tr>
+<tr class="row-even"><td><p>start_date</p></td>
+<td><p>String</p></td>
+<td><p>Air date of the first episode in this season, in the format of “YYYY-MM-DD”</p></td>
+</tr>
+<tr class="row-odd"><td><p>end_date</p></td>
+<td><p>String</p></td>
+<td><p>Air date of the first episode in this season, in the format of “YYYY-MM-DD”</p></td>
+</tr>
+<tr class="row-even"><td><p>total_games</p></td>
+<td><p>integer</p></td>
+<td><p>Total games documented in this season</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="util">
+<h2>Util<a class="headerlink" href="#util" title="Permalink to this headline">¶</a></h2>
+<p>Cluebase also has some other miscellaneous endpoints.</p>
+<div class="section" id="uptime">
+<h3><code class="docutils literal notranslate"><span class="pre">/uptime</span></code><a class="headerlink" href="#uptime" title="Permalink to this headline">¶</a></h3>
+<p>Returns how long the API has been running.</p>
+<p>Example output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">uptime</span><span class="p">:</span> <span class="s2">&quot;4 days, 04:15:23.421409&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="errors">
+<h1>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h1>
+<p>In the result of a failure, Cluebase returns details about the error that
+occurred.</p>
+<div class="section" id="limitnotanumbererror">
+<h2>LimitNotANumberError<a class="headerlink" href="#limitnotanumbererror" title="Permalink to this headline">¶</a></h2>
+<p>Results from an incorrectly formed query string. The limit parameter must
+be a valid number.</p>
+<p><strong>Bad example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://cluebase.lukelav.in/clues?limit=ThisIsAString
+</pre></div>
+</div>
+<p>“ThisIsAString” is obviously not a number. Here’s what it should look like.</p>
+<p><strong>Good example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://cluebase.lukelav.in/clues?limit=30
+</pre></div>
+</div>
+<p>This will properly use the “limit” parameter to return a maximum of 30 clues.</p>
+</div>
 </div>
 
 
@@ -46,7 +356,12 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">Cluebase</a></h1>
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/cluebase-icon.png" alt="Logo"/>
+    
+  </a>
+</p>
 
 
 
@@ -54,6 +369,11 @@
 
 
 
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=lukelavin&repo=cluebase&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
 
 
 
@@ -64,6 +384,26 @@
   <ul>
 <li><a class="reference internal" href="#">What is Cluebase?</a></li>
 <li><a class="reference internal" href="#general-info">General Info</a></li>
+<li><a class="reference internal" href="#endpoints">Endpoints</a><ul>
+<li><a class="reference internal" href="#clues">Clues</a></li>
+<li><a class="reference internal" href="#categories">Categories</a></li>
+<li><a class="reference internal" href="#games">Games</a></li>
+<li><a class="reference internal" href="#contestants">Contestants</a><ul>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
+<li><a class="reference internal" href="#contestants-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;id&gt;</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#seasons">Seasons</a></li>
+<li><a class="reference internal" href="#util">Util</a><ul>
+<li><a class="reference internal" href="#uptime"><code class="docutils literal notranslate"><span class="pre">/uptime</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#errors">Errors</a><ul>
+<li><a class="reference internal" href="#limitnotanumbererror">LimitNotANumberError</a></li>
+</ul>
+</li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>
@@ -98,10 +438,6 @@
           rel="nofollow">Page source</a>
     </div>
 
-    
-    <a href="https://github.com/lukelavin/cluebase" class="github">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
-    </a>
     
 
     

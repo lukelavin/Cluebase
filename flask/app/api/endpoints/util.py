@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime
-from flask import Blueprint, request
+from flask import Blueprint, request, redirect
 from flask_restful import Resource, Api
 from sqlalchemy import exc
 
@@ -20,9 +20,13 @@ class Uptime(Resource):
     @cache.cached(timeout=5)
     def get(self):
         return {
+            'status': success,
             'uptime': str(datetime.now() - start_time)
         }
 
+@util_blueprint.route('/docs')
+def docs():
+    return redirect('https://cluebase.readthedocs.io', code=302)
 
 api.add_resource(Index, '/')
 api.add_resource(Uptime, '/uptime')
