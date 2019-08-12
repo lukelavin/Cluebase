@@ -34,7 +34,7 @@
 <h1>What is Cluebase?<a class="headerlink" href="#what-is-cluebase" title="Permalink to this headline">¶</a></h1>
 <p>Cluebase is an API of all recorded <em>Jeopardy!</em> games. Over 5,000 games,
 10,000 contestants, and 350,000 clues are available through Cluebase.</p>
-<p>All information was scraped from <a class="reference external" href="https://www.j=archive.com">J-Archive</a>, which is a fan-operated archive of
+<p>All information was scraped from <a class="reference external" href="www.j-archive.com">J-Archive</a>, which is a fan-operated archive of
 <em>Jeopardy!</em> information. The data in Cluebase is only as good as the data in
 J-Archive. If you notice any bad data that you believe should be removed from
 the database, you can contact me at <a class="reference external" href="mailto:llavin&#37;&#52;&#48;purdue&#46;edu">llavin<span>&#64;</span>purdue<span>&#46;</span>edu</a>.</p>
@@ -88,15 +88,88 @@ and instead holds error information in <code class="docutils literal notranslate
 <h1>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="clues">
 <h2>Clues<a class="headerlink" href="#clues" title="Permalink to this headline">¶</a></h2>
-<p>Info about /clues endpoints</p>
+<p><strong>Clue Model</strong></p>
+<p>All JSON objects found in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array for clue calls will follow this model.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 6%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>integer</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>game_id</p></td>
+<td><p>integer</p></td>
+<td><p>The <strong>id</strong> for the game in which this clue aired</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p>integer</p></td>
+<td><p>The dollar value of the clue. Higher dollar value implies higher difficulty.</p></td>
+</tr>
+<tr class="row-odd"><td><p>daily_double</p></td>
+<td><p>boolean</p></td>
+<td><p>Boolean flag for if the clue was a daily double (always False, this info was not scraped but may be added at a later date)</p></td>
+</tr>
+<tr class="row-even"><td><p>round</p></td>
+<td><p>String</p></td>
+<td><p>The round this clue appeared in. “J!” for the Jeopardy! round or “DJ!” for Double Jeopardy!. No Final Jeopardy round clues were scraped</p></td>
+</tr>
+<tr class="row-odd"><td><p>category</p></td>
+<td><p>String</p></td>
+<td><p>The category of the clue</p></td>
+</tr>
+<tr class="row-even"><td><p>clue</p></td>
+<td><p>String</p></td>
+<td><p>The clue text</p></td>
+</tr>
+<tr class="row-odd"><td><p>response</p></td>
+<td><p>String</p></td>
+<td><p>The correct response to the clue</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="categories">
 <h2>Categories<a class="headerlink" href="#categories" title="Permalink to this headline">¶</a></h2>
-<p>Info about /categories endpoints</p>
+<p><strong>Category Model</strong></p>
+<p>All JSON objects found in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array for category calls will follow this model.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 13%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>category</p></td>
+<td><p>String</p></td>
+<td><p>Name of the category</p></td>
+</tr>
+<tr class="row-odd"><td><p>clue_count</p></td>
+<td><p>integer</p></td>
+<td><p>Total number of clues belonging to the category</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="games">
 <h2>Games<a class="headerlink" href="#games" title="Permalink to this headline">¶</a></h2>
 <p><strong>Game Model</strong></p>
+<p>All JSON objects found in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array for game calls will follow this model.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -202,26 +275,34 @@ and instead holds error information in <code class="docutils literal notranslate
 </table>
 <div class="section" id="id1">
 <h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>Lists all recorded contestants.</p>
+<blockquote>
+<div><p>Lists all recorded contestants.</p>
 <p><strong>Example output</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
   <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
-      <span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">208</span><span class="p">,</span>
       <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;Ken Jennings&quot;</span><span class="p">,</span>
       <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;a software engineer from Salt Lake City, Utah&quot;</span><span class="p">,</span>
       <span class="n">games_played</span><span class="p">:</span> <span class="mi">94</span><span class="p">,</span>
       <span class="n">total_winnings</span><span class="p">:</span> <span class="mi">2522700</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>
+      <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;James Holzhauer&quot;</span><span class="p">,</span>
+      <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;a professional sports gambler from Las Vegas, Nevada&quot;</span><span class="p">,</span>
+      <span class="n">games_played</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span>
+      <span class="n">total_winnings</span><span class="p">:</span> <span class="mi">2464216</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><strong>Possible Query Parameters</strong></p>
-<ul class="simple">
+<ul>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul>
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul class="simple">
 <li><p>Limits the response to a maximum of &lt;int&gt; contestants.</p></li>
 <li><p><strong>Set to 50 by default.</strong></p></li>
 <li><p><strong>Maximum of 1000.</strong></p></li>
@@ -230,7 +311,7 @@ and instead holds error information in <code class="docutils literal notranslate
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">?offset=&lt;int&gt;</span></code></dt><dd><ul>
+<dt><code class="docutils literal notranslate"><span class="pre">?offset=&lt;int&gt;</span></code></dt><dd><ul class="simple">
 <li><p>Accesses the data starting from an offset of &lt;int&gt; places.</p></li>
 <li><p>Especially useful in conjunction with limit to achieve
 pagination (Page 1 is limit 50 offset 0, Page 2 is limit
@@ -241,7 +322,7 @@ pagination (Page 1 is limit 50 offset 0, Page 2 is limit
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">?order_by=&lt;field&gt;</span></code></dt><dd><ul>
+<dt><code class="docutils literal notranslate"><span class="pre">?order_by=&lt;field&gt;</span></code></dt><dd><ul class="simple">
 <li><p>Orders the data by the given field.</p></li>
 <li><p>For example, <code class="docutils literal notranslate"><span class="pre">?order_by=name</span></code> will alphabetically order the returned
 contestants by their names.</p></li>
@@ -251,7 +332,7 @@ contestants by their names.</p></li>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> or <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code></dt><dd><ul>
+<dt><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> or <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code></dt><dd><ul class="simple">
 <li><p>Used to change the direction of order_by results.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> will order the results in ascending order, and <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code>
 will order the results in descending order.</p></li>
@@ -259,17 +340,71 @@ will order the results in descending order.</p></li>
 </ul>
 </dd>
 </dl>
-</li>
-</ul>
-<p>Example Url</p>
+<p>Example Url:</p>
 <blockquote>
-<div><p><a class="reference external" href="https://cluebase.lukelav.in/contestants?limit=10&amp;order_by=total_winnings&amp;sort=desc">https://cluebase.lukelav.in/contestants?limit=10&amp;order_by=total_winnings&amp;sort=desc</a></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/contestants?limit=10&amp;order_by=total_winnings&amp;sort=desc</span></code></p>
 </div></blockquote>
 <p>This call will return the top 10 contestants who won the most.</p>
+</li>
+</ul>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got contestant list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Error getting contestant list.</p></li>
+</ul>
+</div></blockquote>
 </div>
-<div class="section" id="contestants-id">
-<h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;id&gt;</span></code><a class="headerlink" href="#contestants-id" title="Permalink to this headline">¶</a></h3>
-<p>Information on a specific contestant.</p>
+<div class="section" id="contestants-int-id">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code><a class="headerlink" href="#contestants-int-id" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Information on a specific contestant with the given id.</p>
+<p><strong>Example Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">6123</span><span class="p">,</span>
+      <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">,</span>
+      <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;a freelance writer from Los Angeles, California&quot;</span><span class="p">,</span>
+      <span class="n">games_played</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">total_winnings</span><span class="p">:</span> <span class="mi">1000</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got contestant.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">404</span></code> : Contestant couldn’t be retrieved.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="contestants-string-firstname-lastname">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code><a class="headerlink" href="#contestants-string-firstname-lastname" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Information on a specific contestant with the given name.</p>
+<p><strong>Example Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">6123</span><span class="p">,</span>
+      <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">,</span>
+      <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;a freelance writer from Los Angeles, California&quot;</span><span class="p">,</span>
+      <span class="n">games_played</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">total_winnings</span><span class="p">:</span> <span class="mi">1000</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got contestant.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">404</span></code> : Contestant could not be retrieved.</p></li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="seasons">
@@ -317,7 +452,8 @@ will order the results in descending order.</p></li>
 <p>Cluebase also has some other miscellaneous endpoints.</p>
 <div class="section" id="uptime">
 <h3><code class="docutils literal notranslate"><span class="pre">/uptime</span></code><a class="headerlink" href="#uptime" title="Permalink to this headline">¶</a></h3>
-<p>Returns how long the API has been running.</p>
+<blockquote>
+<div><p>Returns how long the API has been running.</p>
 <p>Example output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
@@ -325,6 +461,7 @@ will order the results in descending order.</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
+</div></blockquote>
 </div>
 </div>
 </div>
@@ -332,20 +469,87 @@ will order the results in descending order.</p></li>
 <h1>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h1>
 <p>In the result of a failure, Cluebase returns details about the error that
 occurred.</p>
+<div class="section" id="idnotfounderror">
+<h2>IdNotFoundError<a class="headerlink" href="#idnotfounderror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Occurs when the resource with the requested id does not exist, or can not be
+found.</p>
+<p>IDs may seem sequential, but are not. Do not iterate through IDs to
+search for resources. Use query parameters to filter or search if necessary.</p>
+</div></blockquote>
+</div>
 <div class="section" id="limitnotanumbererror">
 <h2>LimitNotANumberError<a class="headerlink" href="#limitnotanumbererror" title="Permalink to this headline">¶</a></h2>
-<p>Results from an incorrectly formed query string. The limit parameter must
+<blockquote>
+<div><p>Results from an incorrectly formed query string. The <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter must
 be a valid number.</p>
 <p><strong>Bad example</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://cluebase.lukelav.in/clues?limit=ThisIsAString
-</pre></div>
-</div>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/clues?limit=ThisIsAString</span></code></p>
+</div></blockquote>
 <p>“ThisIsAString” is obviously not a number. Here’s what it should look like.</p>
 <p><strong>Good example</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://cluebase.lukelav.in/clues?limit=30
-</pre></div>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/clues?limit=30</span></code></p>
+</div></blockquote>
+<p>This will properly use the <code class="docutils literal notranslate"><span class="pre">limit</span></code> parameter to return a maximum of 30 clues.</p>
+</div></blockquote>
 </div>
-<p>This will properly use the “limit” parameter to return a maximum of 30 clues.</p>
+<div class="section" id="limitovermaxerror">
+<h2>LimitOverMaxError<a class="headerlink" href="#limitovermaxerror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Results from requesting more data than the server is willing to return. Make
+sure the provided <code class="docutils literal notranslate"><span class="pre">limit</span></code> query parameter is below the maximum for the endpoint.</p>
+<p><strong>Max Limit by Endpoint</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/clues</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/categories</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/games</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/contestants</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/seasons</span></code> : No limit</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="namenotfounderror">
+<h2>NameNotFoundError<a class="headerlink" href="#namenotfounderror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Occurs when the contestant or season with the requested name does not exist,
+or can not be found. Ensure that the name was typed correctly, with
+underscores replacing any spaces.</p>
+</div></blockquote>
+</div>
+<div class="section" id="offsetnotanumbererror">
+<h2>OffsetNotANumberError<a class="headerlink" href="#offsetnotanumbererror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Results from an incorrectly formed query string. The <code class="docutils literal notranslate"><span class="pre">offset</span></code> parameter must
+be a valid number.</p>
+<p><strong>Bad example</strong>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/clues?offset=ThisIsAString</span></code></p>
+</div></blockquote>
+<p>“ThisIsAString” is obviously not a number. Here’s what it should look like.</p>
+<p><strong>Good example</strong>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/clues?offset=30</span></code></p>
+</div></blockquote>
+<p>This will properly use the <code class="docutils literal notranslate"><span class="pre">offset</span></code> parameter to return clues starting from
+the 31st clue.</p>
+</div></blockquote>
+</div>
+<div class="section" id="orderbyinvaliderror">
+<h2>OrderByInvalidError<a class="headerlink" href="#orderbyinvaliderror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Results from an incorrectly formed query string. The <code class="docutils literal notranslate"><span class="pre">order_by</span></code> parameter
+must be the name of a field for the requested model. Refer to the Endpoints
+section for detailed information about valid <code class="docutils literal notranslate"><span class="pre">order_by</span></code> queries.</p>
+</div></blockquote>
+</div>
+<div class="section" id="sortinvaliderror">
+<h2>SortInvalidError<a class="headerlink" href="#sortinvaliderror" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Results from an incorrectly formed query string. The <code class="docutils literal notranslate"><span class="pre">sort</span></code> parameter must
+be either “asc” or “desc”, for ascending or descending order, respectively.</p>
+</div></blockquote>
 </div>
 </div>
 
@@ -390,7 +594,8 @@ be a valid number.</p>
 <li><a class="reference internal" href="#games">Games</a></li>
 <li><a class="reference internal" href="#contestants">Contestants</a><ul>
 <li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
-<li><a class="reference internal" href="#contestants-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;id&gt;</span></code></a></li>
+<li><a class="reference internal" href="#contestants-int-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code></a></li>
+<li><a class="reference internal" href="#contestants-string-firstname-lastname"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#seasons">Seasons</a></li>
@@ -401,7 +606,13 @@ be a valid number.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#errors">Errors</a><ul>
+<li><a class="reference internal" href="#idnotfounderror">IdNotFoundError</a></li>
 <li><a class="reference internal" href="#limitnotanumbererror">LimitNotANumberError</a></li>
+<li><a class="reference internal" href="#limitovermaxerror">LimitOverMaxError</a></li>
+<li><a class="reference internal" href="#namenotfounderror">NameNotFoundError</a></li>
+<li><a class="reference internal" href="#offsetnotanumbererror">OffsetNotANumberError</a></li>
+<li><a class="reference internal" href="#orderbyinvaliderror">OrderByInvalidError</a></li>
+<li><a class="reference internal" href="#sortinvaliderror">SortInvalidError</a></li>
 </ul>
 </li>
 </ul>

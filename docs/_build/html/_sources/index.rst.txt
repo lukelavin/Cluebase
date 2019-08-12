@@ -18,7 +18,7 @@ Cluebase was originally intended to be the backend for a personal project that
 allowed you to practice for the *Jeopardy!* online exam using previously aired
 clues. If I ever get around to doing that, I'll leave a link here.
 
-.. _J-Archive: https://www.j=archive.com
+.. _J-Archive: www.j-archive.com
 
 General Info
 ===============
@@ -70,19 +70,53 @@ Endpoints
 Clues
 -----
 
-Info about /clues endpoints
+**Clue Model**
+
+All JSON objects found in the ``data`` array for clue calls will follow this model.
+
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Field        | Type    | Notes                                                                                                                                   |
++==============+=========+=========================================================================================================================================+
+| id           | integer |                                                                                                                                         |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| game_id      | integer | The **id** for the game in which this clue aired                                                                                        |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| value        | integer | The dollar value of the clue. Higher dollar value implies higher difficulty.                                                            |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| daily_double | boolean | Boolean flag for if the clue was a daily double (always False, this info was not scraped but may be added at a later date)              |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| round        | String  | The round this clue appeared in. "J!" for the Jeopardy! round or "DJ!" for Double Jeopardy!. No Final Jeopardy round clues were scraped |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| category     | String  | The category of the clue                                                                                                                |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| clue         | String  | The clue text                                                                                                                           |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| response     | String  | The correct response to the clue                                                                                                        |
++--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
 
 
 Categories
 ----------
 
-Info about /categories endpoints
+**Category Model**
+
+All JSON objects found in the ``data`` array for category calls will follow this model.
+
++------------+---------+-------------------------------------------------+
+| Field      | Type    | Notes                                           |
++============+=========+=================================================+
+| category   | String  | Name of the category                            |
++------------+---------+-------------------------------------------------+
+| clue_count | integer | Total number of clues belonging to the category |
++------------+---------+-------------------------------------------------+
 
 
 Games
 -----
 
 **Game Model**
+
+All JSON objects found in the ``data`` array for game calls will follow this model.
 
 +-------------+---------+-------------------------------------------------------------------------------------------------------+
 | Field       | Type    | Notes                                                                                                 |
@@ -137,60 +171,117 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
 ``/contestants``
 ~~~~~~~~~~~~~~~~
 
-Lists all recorded contestants.
+    Lists all recorded contestants.
 
-**Example output**::
+    **Example output**::
 
-  {
-    status: "success",
-    data: [
       {
-        id: 1,
-        name: "Ken Jennings",
-        notes: "a software engineer from Salt Lake City, Utah",
-        games_played: 94,
-        total_winnings: 2522700
+        status: "success",
+        data: [
+          {
+            id: 208,
+            name: "Ken Jennings",
+            notes: "a software engineer from Salt Lake City, Utah",
+            games_played: 94,
+            total_winnings: 2522700
+          },
+          {
+            id: 75,
+            name: "James Holzhauer",
+            notes: "a professional sports gambler from Las Vegas, Nevada",
+            games_played: 33,
+            total_winnings: 2464216
+          }
+        ]
       }
-    ]
-  }
 
-**Possible Query Parameters**
+    **Possible Query Parameters**
 
-- ``?limit=<int>``
-   - Limits the response to a maximum of <int> contestants.
-   - **Set to 50 by default.**
-   - **Maximum of 1000.**
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> contestants.
+       - **Set to 50 by default.**
+       - **Maximum of 1000.**
 
-- ``?offset=<int>``
-   - Accesses the data starting from an offset of <int> places.
-   - Especially useful in conjunction with limit to achieve
-     pagination (Page 1 is limit 50 offset 0, Page 2 is limit
-     50 offset 50, etc.).
-   - **Set to 0 by default.**
+    - ``?offset=<int>``
+       - Accesses the data starting from an offset of <int> places.
+       - Especially useful in conjunction with limit to achieve
+         pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+         50 offset 50, etc.).
+       - **Set to 0 by default.**
 
-- ``?order_by=<field>``
-   - Orders the data by the given field.
-   - For example, ``?order_by=name`` will alphabetically order the returned
-     contestants by their names.
-   - **Set to id by default.**
+    - ``?order_by=<field>``
+       - Orders the data by the given field.
+       - For example, ``?order_by=name`` will alphabetically order the returned
+         contestants by their names.
+       - **Set to id by default.**
 
-- ``?sort=asc`` or ``?sort=desc``
-   - Used to change the direction of order_by results.
-   - ``?sort=asc`` will order the results in ascending order, and ``?sort=desc``
-     will order the results in descending order.
-   - **Set to ``asc`` by default.**
+    - ``?sort=asc`` or ``?sort=desc``
+       - Used to change the direction of order_by results.
+       - ``?sort=asc`` will order the results in ascending order, and ``?sort=desc``
+         will order the results in descending order.
+       - **Set to ``asc`` by default.**
 
-Example Url
+      Example Url\:
 
-   https://cluebase.lukelav.in/contestants?limit=10&order_by=total_winnings&sort=desc
+         ``cluebase.lukelav.in/contestants?limit=10&order_by=total_winnings&sort=desc``
 
-This call will return the top 10 contestants who won the most.
+      This call will return the top 10 contestants who won the most.
 
-``/contestants/<id>``
-~~~~~~~~~~~~~~~~~~~~~~
 
-Information on a specific contestant.
+    **Response Codes**
 
+    - ``200`` : Successfully got contestant list.
+    - ``400`` : Error getting contestant list.
+
+``/contestants/<int:id>``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Information on a specific contestant with the given id.
+
+    **Example Output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            id: 6123,
+            name: "John Smith",
+            notes: "a freelance writer from Los Angeles, California",
+            games_played: 1,
+            total_winnings: 1000
+          }
+        ]
+      }
+
+    **Response Codes**
+
+    - ``200`` : Successfully got contestant.
+    - ``404`` : Contestant couldn't be retrieved.
+
+``/contestants/<string:firstname_lastname>``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Information on a specific contestant with the given name.
+
+    **Example Output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            id: 6123,
+            name: "John Smith",
+            notes: "a freelance writer from Los Angeles, California",
+            games_played: 1,
+            total_winnings: 1000
+          }
+        ]
+      }
+
+    **Response Codes**
+
+    - ``200`` : Successfully got contestant.
+    - ``404`` : Contestant could not be retrieved.
 
 Seasons
 -------
@@ -222,14 +313,14 @@ Cluebase also has some other miscellaneous endpoints.
 ``/uptime``
 ~~~~~~~~~~~
 
-Returns how long the API has been running.
+    Returns how long the API has been running.
 
-Example output::
+    Example output::
 
-   {
-     status: "success",
-     uptime: "4 days, 04:15:23.421409"
-   }
+       {
+         status: "success",
+         uptime: "4 days, 04:15:23.421409"
+       }
 
 
 Errors
@@ -238,20 +329,88 @@ Errors
 In the result of a failure, Cluebase returns details about the error that
 occurred.
 
+IdNotFoundError
+---------------
+
+  Occurs when the resource with the requested id does not exist, or can not be
+  found.
+
+  IDs may seem sequential, but are not. Do not iterate through IDs to
+  search for resources. Use query parameters to filter or search if necessary.
+
+
 LimitNotANumberError
 --------------------
 
-Results from an incorrectly formed query string. The limit parameter must
-be a valid number.
+  Results from an incorrectly formed query string. The ``limit`` parameter must
+  be a valid number.
 
-**Bad example**::
+  **Bad example**\:
 
-   https://cluebase.lukelav.in/clues?limit=ThisIsAString
+     ``cluebase.lukelav.in/clues?limit=ThisIsAString``
 
-"ThisIsAString" is obviously not a number. Here's what it should look like.
+  "ThisIsAString" is obviously not a number. Here's what it should look like.
 
-**Good example**::
+  **Good example**\:
 
-   https://cluebase.lukelav.in/clues?limit=30
+     ``cluebase.lukelav.in/clues?limit=30``
 
-This will properly use the "limit" parameter to return a maximum of 30 clues.
+  This will properly use the ``limit`` parameter to return a maximum of 30 clues.
+
+
+LimitOverMaxError
+-----------------
+
+  Results from requesting more data than the server is willing to return. Make
+  sure the provided ``limit`` query parameter is below the maximum for the endpoint.
+
+  **Max Limit by Endpoint**
+
+  - ``/clues`` : TODO
+  - ``/categories`` : TODO
+  - ``/games`` : TODO
+  - ``/contestants`` : TODO
+  - ``/seasons`` : No limit
+
+
+NameNotFoundError
+-----------------
+
+  Occurs when the contestant or season with the requested name does not exist,
+  or can not be found. Ensure that the name was typed correctly, with
+  underscores replacing any spaces.
+
+
+OffsetNotANumberError
+---------------------
+
+  Results from an incorrectly formed query string. The ``offset`` parameter must
+  be a valid number.
+
+  **Bad example**\:
+
+     ``cluebase.lukelav.in/clues?offset=ThisIsAString``
+
+  "ThisIsAString" is obviously not a number. Here's what it should look like.
+
+  **Good example**\:
+
+     ``cluebase.lukelav.in/clues?offset=30``
+
+  This will properly use the ``offset`` parameter to return clues starting from
+  the 31st clue.
+
+
+OrderByInvalidError
+-------------------
+
+  Results from an incorrectly formed query string. The ``order_by`` parameter
+  must be the name of a field for the requested model. Refer to the Endpoints
+  section for detailed information about valid ``order_by`` queries.
+
+
+SortInvalidError
+----------------
+
+  Results from an incorrectly formed query string. The ``sort`` parameter must
+  be either "asc" or "desc", for ascending or descending order, respectively.

@@ -11,7 +11,7 @@ api = Api(categories_blueprint)
 def category_to_json(category):
     return {
         'category': category[0],
-        'question_count': category[1]
+        'clue_count': category[1]
     }
 
 @cache.memoize()
