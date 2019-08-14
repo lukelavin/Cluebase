@@ -305,7 +305,7 @@ and instead holds error information in <code class="docutils literal notranslate
 <dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul class="simple">
 <li><p>Limits the response to a maximum of &lt;int&gt; contestants.</p></li>
 <li><p><strong>Set to 50 by default.</strong></p></li>
-<li><p><strong>Maximum of 1000.</strong></p></li>
+<li><p><strong>Maximum of 2000.</strong></p></li>
 </ul>
 </dd>
 </dl>
@@ -357,7 +357,7 @@ will order the results in descending order.</p></li>
 <div class="section" id="contestants-int-id">
 <h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code><a class="headerlink" href="#contestants-int-id" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<div><p>Information on a specific contestant with the given id.</p>
+<div><p>Information on the specific contestant with the given id.</p>
 <p><strong>Example Output</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
@@ -383,7 +383,7 @@ will order the results in descending order.</p></li>
 <div class="section" id="contestants-string-firstname-lastname">
 <h3><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code><a class="headerlink" href="#contestants-string-firstname-lastname" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<div><p>Information on a specific contestant with the given name.</p>
+<div><p>Information on the specific contestant with the given name.</p>
 <p><strong>Example Output</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
@@ -403,6 +403,29 @@ will order the results in descending order.</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got contestant.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">404</span></code> : Contestant could not be retrieved.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="contestants-random">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code><a class="headerlink" href="#contestants-random" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Returns randomly selected contestants.</p>
+<p><strong>Possible Query Parameters</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Limits the response to a maximum of &lt;int&gt; contestants.</p></li>
+<li><p><strong>Set to 1 by default.</strong></p></li>
+<li><p><strong>Maximum of 100.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got random contestant(s).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Error getting random contestant(s).</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -505,7 +528,8 @@ sure the provided <code class="docutils literal notranslate"><span class="pre">l
 <li><p><code class="docutils literal notranslate"><span class="pre">/clues</span></code> : TODO</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/categories</span></code> : TODO</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/games</span></code> : TODO</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/contestants</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/contestants</span></code> : 2000</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code> : 100</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/seasons</span></code> : No limit</p></li>
 </ul>
 </div></blockquote>
@@ -596,6 +620,7 @@ be either “asc” or “desc”, for ascending or descending order, respective
 <li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
 <li><a class="reference internal" href="#contestants-int-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code></a></li>
 <li><a class="reference internal" href="#contestants-string-firstname-lastname"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code></a></li>
+<li><a class="reference internal" href="#contestants-random"><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#seasons">Seasons</a></li>

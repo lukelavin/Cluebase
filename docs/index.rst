@@ -200,7 +200,7 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
     - ``?limit=<int>``
        - Limits the response to a maximum of <int> contestants.
        - **Set to 50 by default.**
-       - **Maximum of 1000.**
+       - **Maximum of 2000.**
 
     - ``?offset=<int>``
        - Accesses the data starting from an offset of <int> places.
@@ -236,7 +236,7 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
 ``/contestants/<int:id>``
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Information on a specific contestant with the given id.
+    Information on the specific contestant with the given id.
 
     **Example Output**::
 
@@ -261,7 +261,7 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
 ``/contestants/<string:firstname_lastname>``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Information on a specific contestant with the given name.
+    Information on the specific contestant with the given name.
 
     **Example Output**::
 
@@ -282,6 +282,24 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
 
     - ``200`` : Successfully got contestant.
     - ``404`` : Contestant could not be retrieved.
+
+``/contestants/random``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Returns randomly selected contestants.
+
+    **Possible Query Parameters**
+
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> contestants.
+       - **Set to 1 by default.**
+       - **Maximum of 100.**
+
+    **Response Codes**
+
+    - ``200`` : Successfully got random contestant(s).
+    - ``400`` : Error getting random contestant(s).
+
 
 Seasons
 -------
@@ -369,7 +387,8 @@ LimitOverMaxError
   - ``/clues`` : TODO
   - ``/categories`` : TODO
   - ``/games`` : TODO
-  - ``/contestants`` : TODO
+  - ``/contestants`` : 2000
+  - ``/contestants/random`` : 100
   - ``/seasons`` : No limit
 
 

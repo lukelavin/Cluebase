@@ -32,8 +32,8 @@ def get_contestants(limit, offset, order_by, sort):
     for c in str(limit):
         if digits.find(c) == -1:
             raise LimitNotANumberError('"Limit" query parameter is not a valid number')
-    if int(limit) > 5000:
-        raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 5000')
+    if int(limit) > 2000:
+        raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 2000')
     for c in str(offset):
         if digits.find(c) == -1:
             raise OffsetNotANumberError('"offset" query parameter is not a valid number')
@@ -116,24 +116,39 @@ def get_contestant_by_name(name):
 
     return result
 
-def get_contestant_random():
-    result = []
+def get_contestant_random(limit):
+    digits = '0123456789'
+    for c in str(limit):
+        if digits.find(c) == -1:
+            raise LimitNotANumberError('"Limit" query parameter is not a valid number')
+    if int(limit) > 100:
+        raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 100')
+
+    results = []
     max = Contestants.query.with_entities(func.max(Contestants.id)).first()[0]
+    usedIds = [0]
 
-    while len(result) < 1:
-        randId = random.randint(1, max)
-        result = [contestant.to_json() for contestant in Contestants.query
-                    .filter_by(id = randId)
-                    .all()]
+    randId = 0
+    randResult = []
 
-    return result
+    while len(results) < int(limit):
+        while len(randResult) < 1 or randId in usedIds:
+            randId = random.randint(1, max)
+            randResult = [contestant.to_json() for contestant in Contestants.query
+                        .filter_by(id = randId)
+                        .all()]
+        results.append(randResult[0])
+        usedIds.append(randId)
+
+    return results
 
 
 class ContestantByName(Resource):
     def get(self, name):
         if name == 'random':
+            limit = request.args.get('limit', 1)
             try:
-                result = get_contestant_random()
+                result = get_contestant_random(limit)
             except Exception as e:
                 return {
                     'status': 'failure',
