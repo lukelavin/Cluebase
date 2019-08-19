@@ -111,7 +111,7 @@ def get_contestant_by_name(name):
                         .all()]
 
     if len(result) < 1:
-        raise NameNotFoundError('Contestant name not found in database. ' + \
+        raise NameNotFoundError(f'Contestant with name {name} name not found in database. ' + \
                                 'Make sure to use underscores as spaces.')
 
     return result

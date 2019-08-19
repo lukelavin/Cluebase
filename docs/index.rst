@@ -23,7 +23,9 @@ clues. If I ever get around to doing that, I'll leave a link here.
 General Info
 ===============
 
-**All of Cluebase's endpoints return simple JSON representations.**
+**All of Cluebase's endpoints return simple JSON representations. All endpoints
+only (publicly) support GET requests. Other HTTP methods (if they are even implemented)
+are used only for internal maintenance and require a secret key.**
 
 Here's an example of how Cluebase may respond to a successful API call::
 
@@ -93,6 +95,106 @@ All JSON objects found in the ``data`` array for clue calls will follow this mod
 +--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
 | response     | String  | The correct response to the clue                                                                                                        |
 +--------------+---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+
+``/clues``
+~~~~~~~~~~~~~~~~
+
+    Lists all recorded clues.
+
+    **Example output**::
+
+      {
+        status: "success",
+          data: [
+            {
+              id: 2,
+              game_id: 1,
+              value: 200,
+              daily_double: false,
+              round: "J!",
+              category: "2 VERBS IN ONE",
+              clue: "To travel by taking rides from passing cars",
+              response: "hitchhike"
+            },
+            {
+              id: 3,
+              game_id: 1,
+              value: 200,
+              daily_double: false,
+              round: "J!",
+              category: "TURNING TO SPORTS",
+              clue: "In 201 a U.K. game of this sport went 50 hours non-stop--"the only time we slept was when our team was batting"",
+              response: "cricket"
+          }
+        ]
+      }
+
+    **Possible Query Parameters**
+
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> clues.
+       - **Set to 50 by default.**
+       - **Maximum of 1000.**
+
+    - ``?offset=<int>``
+       - Accesses the data starting from an offset of <int> places.
+       - Especially useful in conjunction with limit to achieve
+         pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+         50 offset 50, etc.).
+       - **Set to 0 by default.**
+
+    - ``?order_by=<field>``
+       - Orders the data by the given field.
+       - For example, ``?order_by=value`` will order the returned
+         clues by their monetary value.
+       - **Set to id by default.**
+
+    - ``?sort=asc`` or ``?sort=desc``
+       - Used to change the direction of order_by results.
+       - ``?sort=asc`` will order the results in ascending order, and ``?sort=desc``
+         will order the results in descending order.
+       - **Set to asc by default.**
+
+      Example Url\:
+
+         ``cluebase.lukelav.in/clues?limit=100&order_by=category&sort=desc``
+
+      This call will return the last 100 clues in lexicographic order.
+
+
+    **Response Codes**
+
+    - ``200`` : Successfully got clue list.
+    - ``400`` : Error getting clue list.
+
+
+``/clues/<int:id>``
+~~~~~~~~~~~~~~~~~~~~
+
+    Information on the specific clue with the given id.
+
+    **Example output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            id: 30000,
+            game_id: 522,
+            value: 400,
+            daily_double: false,
+            round: "J!",
+            category: "ELEMENTARY",
+            clue: "By volume this gas makes up about 78% of Earth's atmosphere",
+            response: "nitrogen"
+          }
+        ]
+      }
+
+    **Response Codes**
+
+    - ``200`` : Successfully got clue.
+    - ``404`` : Clue could not be retrieved.
 
 
 Categories
@@ -219,7 +321,7 @@ All JSON objects found in the ``data`` array for contestant calls will follow th
        - Used to change the direction of order_by results.
        - ``?sort=asc`` will order the results in ascending order, and ``?sort=desc``
          will order the results in descending order.
-       - **Set to ``asc`` by default.**
+       - **Set to asc by default.**
 
       Example Url\:
 
