@@ -38,6 +38,7 @@
 <em>Jeopardy!</em> information. The data in Cluebase is only as good as the data in
 J-Archive. If you notice any bad data that you believe should be removed from
 the database, you can contact me at <a class="reference external" href="mailto:llavin&#37;&#52;&#48;purdue&#46;edu">llavin<span>&#64;</span>purdue<span>&#46;</span>edu</a>.</p>
+<p>Cluebase is open-source and <a class="reference external" href="github.com/lukelavin/cluebase">available on Github</a>!</p>
 <p>Cluebase was originally intended to be the backend for a personal project that
 allowed you to practice for the <em>Jeopardy!</em> online exam using previously aired
 clues. If I ever get around to doing that, I’ll leave a link here.</p>
@@ -252,6 +253,47 @@ will order the results in descending order.</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got clue.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">404</span></code> : Clue could not be retrieved.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="clues-random">
+<h3><code class="docutils literal notranslate"><span class="pre">/clues/random</span></code><a class="headerlink" href="#clues-random" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Information on the specific clue with the given id.</p>
+<p><strong>Example output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+      <span class="n">game_id</span><span class="p">:</span> <span class="mi">522</span><span class="p">,</span>
+      <span class="n">value</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+      <span class="n">daily_double</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+      <span class="nb">round</span><span class="p">:</span> <span class="s2">&quot;J!&quot;</span><span class="p">,</span>
+      <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;ELEMENTARY&quot;</span><span class="p">,</span>
+      <span class="n">clue</span><span class="p">:</span> <span class="s2">&quot;By volume this gas makes up about 78</span><span class="si">% o</span><span class="s2">f Earth&#39;s atmosphere&quot;</span><span class="p">,</span>
+      <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;nitrogen&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Possible Query Parameters</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Limits the response to a maximum of &lt;int&gt; clues.</p></li>
+<li><p><strong>Set to 1 by default.</strong></p></li>
+<li><p><strong>Maximum of 100.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got clue.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Server could not get a random clue.</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -734,6 +776,7 @@ be either “asc” or “desc”, for ascending or descending order, respective
 <li><a class="reference internal" href="#clues">Clues</a><ul>
 <li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">/clues</span></code></a></li>
 <li><a class="reference internal" href="#clues-int-id"><code class="docutils literal notranslate"><span class="pre">/clues/&lt;int:id&gt;</span></code></a></li>
+<li><a class="reference internal" href="#clues-random"><code class="docutils literal notranslate"><span class="pre">/clues/random</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#categories">Categories</a></li>

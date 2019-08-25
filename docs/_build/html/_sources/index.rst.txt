@@ -14,11 +14,14 @@ All information was scraped from J-Archive_, which is a fan-operated archive of
 J-Archive. If you notice any bad data that you believe should be removed from
 the database, you can contact me at llavin@purdue.edu.
 
+Cluebase is open-source and `available on Github`_!
+
 Cluebase was originally intended to be the backend for a personal project that
 allowed you to practice for the *Jeopardy!* online exam using previously aired
 clues. If I ever get around to doing that, I'll leave a link here.
 
 .. _J-Archive: www.j-archive.com
+.. _`available on Github`: github.com/lukelavin/cluebase
 
 General Info
 ===============
@@ -167,7 +170,6 @@ All JSON objects found in the ``data`` array for clue calls will follow this mod
     - ``200`` : Successfully got clue list.
     - ``400`` : Error getting clue list.
 
-
 ``/clues/<int:id>``
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -195,6 +197,41 @@ All JSON objects found in the ``data`` array for clue calls will follow this mod
 
     - ``200`` : Successfully got clue.
     - ``404`` : Clue could not be retrieved.
+
+``/clues/random``
+~~~~~~~~~~~~~~~~~~~~
+
+    Information on the specific clue with the given id.
+
+    **Example output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            id: 30000,
+            game_id: 522,
+            value: 400,
+            daily_double: false,
+            round: "J!",
+            category: "ELEMENTARY",
+            clue: "By volume this gas makes up about 78% of Earth's atmosphere",
+            response: "nitrogen"
+          }
+        ]
+      }
+
+    **Possible Query Parameters**
+
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> clues.
+       - **Set to 1 by default.**
+       - **Maximum of 100.**
+
+    **Response Codes**
+
+    - ``200`` : Successfully got clue.
+    - ``400`` : Server could not get a random clue.
 
 
 Categories

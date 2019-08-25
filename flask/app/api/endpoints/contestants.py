@@ -153,7 +153,7 @@ class ContestantByName(Resource):
                 return {
                     'status': 'failure',
                     'error': repr(e)
-                }, 404
+                }, 400
         else:
             name = name.replace('_', ' ').replace('-', ' ')
 

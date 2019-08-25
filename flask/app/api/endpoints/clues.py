@@ -106,5 +106,49 @@ class ClueById(Resource):
         }, 200
 
 
+def get_clue_random(limit):
+    digits = '0123456789'
+    for c in str(limit):
+        if digits.find(c) == -1:
+            raise LimitNotANumberError('"Limit" query parameter is not a valid number')
+    if int(limit) > 100:
+        raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 100')
+
+    results = []
+    max = Clues.query.with_entities(func.max(Clues.id)).first()[0]
+    usedIds = [0]
+
+    randId = 0
+    randResult = []
+
+    while len(results) < int(limit):
+        while len(randResult) < 1 or randId in usedIds:
+            randId = random.randint(1, max)
+            randResult = [clue.to_json() for clue in Clues.query
+                        .filter_by(id = randId)
+                        .all()]
+        results.append(randResult[0])
+        usedIds.append(randId)
+
+    return results
+
+class CluesRandom(Resource):
+    def get(self):
+        limit = request.args.get('limit', 1)
+
+        try:
+            result = get_clue_random(limit)
+        except Exception as e:
+            return {
+                'status' : 'failure',
+                'error': repr(e)
+            }, 400
+
+        return {
+            'status' : 'success',
+            'data': result
+        }, 200
+
 api.add_resource(CluesList, '/clues')
 api.add_resource(ClueById, '/clues/<int:id>')
+api.add_resource(CluesRandom, '/clues/random')
