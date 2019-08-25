@@ -249,6 +249,50 @@ All JSON objects found in the ``data`` array for category calls will follow this
 | clue_count | integer | Total number of clues belonging to the category |
 +------------+---------+-------------------------------------------------+
 
+``/categories``
+~~~~~~~~~~~~~~~~
+
+    Lists all recorded categories, in order of frequency.
+
+    **Example output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            category: "SCIENCE",
+            clue_count: 911
+          },
+          {
+            category: "LITERATURE",
+            clue_count: 812
+          },
+          {
+            category: "AMERICAN HISTORY",
+            clue_count: 778
+          }
+        ]
+      }
+
+    **Possible Query Parameters**
+
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> categories.
+       - **Set to 50 by default.**
+       - **Maximum of 2000.**
+
+    - ``?offset=<int>``
+       - Accesses the data starting from an offset of <int> places.
+       - Especially useful in conjunction with limit to achieve
+         pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+         50 offset 50, etc.).
+       - **Set to 0 by default.**
+
+    **Response Codes**
+
+    - ``200`` : Successfully got category list.
+    - ``400`` : Error getting category list.
+
 
 Games
 -----
@@ -523,12 +567,12 @@ LimitOverMaxError
 
   **Max Limit by Endpoint**
 
-  - ``/clues`` : TODO
-  - ``/categories`` : TODO
+  - ``/clues`` : 2000
+  - ``/clues/random`` : 100
+  - ``/categories`` : 2000
   - ``/games`` : TODO
   - ``/contestants`` : 2000
   - ``/contestants/random`` : 100
-  - ``/seasons`` : No limit
 
 
 NameNotFoundError

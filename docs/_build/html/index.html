@@ -325,6 +325,60 @@ will order the results in descending order.</p></li>
 </tr>
 </tbody>
 </table>
+<div class="section" id="id2">
+<h3><code class="docutils literal notranslate"><span class="pre">/categories</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Lists all recorded categories, in order of frequency.</p>
+<p><strong>Example output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;SCIENCE&quot;</span><span class="p">,</span>
+      <span class="n">clue_count</span><span class="p">:</span> <span class="mi">911</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;LITERATURE&quot;</span><span class="p">,</span>
+      <span class="n">clue_count</span><span class="p">:</span> <span class="mi">812</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;AMERICAN HISTORY&quot;</span><span class="p">,</span>
+      <span class="n">clue_count</span><span class="p">:</span> <span class="mi">778</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Possible Query Parameters</strong></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Limits the response to a maximum of &lt;int&gt; categories.</p></li>
+<li><p><strong>Set to 50 by default.</strong></p></li>
+<li><p><strong>Maximum of 2000.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?offset=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Accesses the data starting from an offset of &lt;int&gt; places.</p></li>
+<li><p>Especially useful in conjunction with limit to achieve
+pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+50 offset 50, etc.).</p></li>
+<li><p><strong>Set to 0 by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got category list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Error getting category list.</p></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="games">
 <h2>Games<a class="headerlink" href="#games" title="Permalink to this headline">¶</a></h2>
@@ -433,8 +487,8 @@ will order the results in descending order.</p></li>
 </tr>
 </tbody>
 </table>
-<div class="section" id="id2">
-<h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>Lists all recorded contestants.</p>
 <p><strong>Example output</strong>:</p>
@@ -779,10 +833,13 @@ be either “asc” or “desc”, for ascending or descending order, respective
 <li><a class="reference internal" href="#clues-random"><code class="docutils literal notranslate"><span class="pre">/clues/random</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#categories">Categories</a></li>
+<li><a class="reference internal" href="#categories">Categories</a><ul>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">/categories</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#games">Games</a></li>
 <li><a class="reference internal" href="#contestants">Contestants</a><ul>
-<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
 <li><a class="reference internal" href="#contestants-int-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code></a></li>
 <li><a class="reference internal" href="#contestants-string-firstname-lastname"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code></a></li>
 <li><a class="reference internal" href="#contestants-random"><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code></a></li>
