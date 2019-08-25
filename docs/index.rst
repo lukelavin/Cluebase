@@ -228,6 +228,14 @@ All JSON objects found in the ``data`` array for clue calls will follow this mod
        - **Set to 1 by default.**
        - **Maximum of 100.**
 
+    - ``?category=<str>``
+       - Returns random clue(s) of the given category.
+       - Best used with large categories like "Science" or "Literature"
+
+    - ``?difficulty=<int>``
+       - Returns random clue(s) of the given difficulty, on a scale of 1-5.
+       - **Must be a number 1 through 5**
+
     **Response Codes**
 
     - ``200`` : Successfully got clue.
@@ -328,6 +336,109 @@ All JSON objects found in the ``data`` array for game calls will follow this mod
 +-------------+---------+-------------------------------------------------------------------------------------------------------+
 | score3      | integer | The final score of the third contestant                                                               |
 +-------------+---------+-------------------------------------------------------------------------------------------------------+
+
+``/games``
+~~~~~~~~~~~~~~~~
+
+    Lists all recorded games.
+
+    **Example output**::
+
+      {
+        status: "success",
+          data: [
+            {
+              id: 2,
+              game_id: 1,
+              value: 200,
+              daily_double: false,
+              round: "J!",
+              category: "2 VERBS IN ONE",
+              game: "To travel by taking rides from passing cars",
+              response: "hitchhike"
+            },
+            {
+              id: 3,
+              game_id: 1,
+              value: 200,
+              daily_double: false,
+              round: "J!",
+              category: "TURNING TO SPORTS",
+              game: "In 201 a U.K. game of this sport went 50 hours non-stop--"the only time we slept was when our team was batting"",
+              response: "cricket"
+          }
+        ]
+      }
+
+    **Possible Query Parameters**
+
+    - ``?limit=<int>``
+       - Limits the response to a maximum of <int> games.
+       - **Set to 50 by default.**
+       - **Maximum of 1000.**
+
+    - ``?offset=<int>``
+       - Accesses the data starting from an offset of <int> places.
+       - Especially useful in conjunction with limit to achieve
+         pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+         50 offset 50, etc.).
+       - **Set to 0 by default.**
+
+    - ``?order_by=<field>``
+       - Orders the data by the given field.
+       - For example, ``?order_by=value`` will order the returned
+         games by their monetary value.
+       - **Set to id by default.**
+
+    - ``?sort=asc`` or ``?sort=desc``
+       - Used to change the direction of order_by results.
+       - ``?sort=asc`` will order the results in ascending order, and ``?sort=desc``
+         will order the results in descending order.
+       - **Set to asc by default.**
+
+      Example Url\:
+
+         ``cluebase.lukelav.in/games?limit=100&order_by=category&sort=desc``
+
+      This call will return the last 100 games in lexicographic order.
+
+
+    **Response Codes**
+
+    - ``200`` : Successfully got game list.
+    - ``400`` : Error getting game list.
+
+``/games/<int:id>``
+~~~~~~~~~~~~~~~~~~~~
+
+    Information on the specific game with the given id.
+
+    **Example output**::
+
+      {
+        status: "success",
+        data: [
+          {
+            id: 450,
+            episode_num: 7601,
+            season_id: 2,
+            air_date: "2017-10-02",
+            notes: "Austin Rogers game 5.",
+            contestant1: 214,
+            contestant2: 856,
+            contestant3: 857,
+            winner: 856,
+            score1: 65600,
+            score2: 6400,
+            score3: 2000
+          }
+        ]
+      }
+
+    **Response Codes**
+
+    - ``200`` : Successfully got game.
+    - ``404`` : Game could not be retrieved.
 
 
 Contestants
@@ -505,6 +616,16 @@ All JSON objects found in the ``data`` array for season calls will follow this m
 | total_games | integer | Total games documented in this season                                       |
 +-------------+---------+-----------------------------------------------------------------------------+
 
+``/seasons``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Lists all seasons in the database.
+
+    **Response Codes**
+
+    - ``200`` : Successfully got seasons list.
+    - ``400`` : Error getting list of seasons.
+
 
 Util
 ----
@@ -567,10 +688,10 @@ LimitOverMaxError
 
   **Max Limit by Endpoint**
 
-  - ``/clues`` : 2000
+  - ``/clues`` : 1000
   - ``/clues/random`` : 100
   - ``/categories`` : 2000
-  - ``/games`` : TODO
+  - ``/games`` : 1000
   - ``/contestants`` : 2000
   - ``/contestants/random`` : 100
 

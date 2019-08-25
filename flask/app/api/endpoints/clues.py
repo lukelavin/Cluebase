@@ -2,7 +2,7 @@ import random
 
 from flask import Blueprint, request
 from flask_restful import Resource, Api
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 from app import db, cache
 from app.api.models import Clues
@@ -35,7 +35,7 @@ def get_clues(limit, offset, order_by, sort):
     for c in str(limit):
         if digits.find(c) == -1:
             raise LimitNotANumberError('"Limit" query parameter is not a valid number')
-    if int(limit) > 2000:
+    if int(limit) > 1000:
         raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 1000')
     for c in str(offset):
         if digits.find(c) == -1:
@@ -106,7 +106,7 @@ class ClueById(Resource):
         }, 200
 
 
-def get_clue_random(limit):
+def get_clue_random(limit, category, difficulty):
     digits = '0123456789'
     for c in str(limit):
         if digits.find(c) == -1:
@@ -114,30 +114,58 @@ def get_clue_random(limit):
     if int(limit) > 100:
         raise LimitOverMaxError('Requested too many resources. Maximum "limit" is 100')
 
-    results = []
-    max = Clues.query.with_entities(func.max(Clues.id)).first()[0]
-    usedIds = [0]
+    if category is None and difficulty is None:
+        results = []
+        max = Clues.query.with_entities(func.max(Clues.id)).first()[0]
+        usedIds = [0]
 
-    randId = 0
-    randResult = []
+        randId = 0
+        randResult = []
 
-    while len(results) < int(limit):
-        while len(randResult) < 1 or randId in usedIds:
-            randId = random.randint(1, max)
-            randResult = [clue.to_json() for clue in Clues.query
-                        .filter_by(id = randId)
+        while len(results) < int(limit):
+            while len(randResult) < 1 or randId in usedIds:
+                randId = random.randint(1, max)
+                randResult = [clue.to_json() for clue in Clues.query
+                            .filter_by(id = randId)
+                            .all()]
+            results.append(randResult[0])
+            usedIds.append(randId)
+
+    elif category is None:
+        round = random.randint(1, 2)
+        results = [clue.to_json() for clue in Clues.query
+                        .filter_by(round=('J!' if round == 1 else 'DJ!'))
+                        .filter_by(value=(int(difficulty) * 200 * round))
+                        .order_by(func.random())
+                        .limit(limit)
                         .all()]
-        results.append(randResult[0])
-        usedIds.append(randId)
+    elif difficulty is None:
+        results = [clue.to_json() for clue in Clues.query
+                        .filter(func.lower(Clues.category) == category)
+                        .order_by(func.random())
+                        .limit(limit)
+                        .all()]
+    else:
+        round = random.randint(1, 2)
+        results = [clue.to_json() for clue in Clues.query
+                        .filter(func.lower(Clues.category) == category)
+                        .filter_by(round=('J!' if round == 1 else 'DJ!'))
+                        .filter_by(value=(int(difficulty) * 200 * round))
+                        .order_by(func.random())
+                        .limit(limit)
+                        .all()]
 
     return results
+
 
 class CluesRandom(Resource):
     def get(self):
         limit = request.args.get('limit', 1)
+        category = request.args.get('category', None)
+        difficulty = request.args.get('difficulty', None)
 
         try:
-            result = get_clue_random(limit)
+            result = get_clue_random(limit, category, difficulty)
         except Exception as e:
             return {
                 'status' : 'failure',

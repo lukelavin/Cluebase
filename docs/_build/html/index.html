@@ -289,6 +289,22 @@ will order the results in descending order.</p></li>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?category=&lt;str&gt;</span></code></dt><dd><ul>
+<li><p>Returns random clue(s) of the given category.</p></li>
+<li><p>Best used with large categories like “Science” or “Literature”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?difficulty=&lt;int&gt;</span></code></dt><dd><ul>
+<li><p>Returns random clue(s) of the given difficulty, on a scale of 1-5.</p></li>
+<li><p><strong>Must be a number 1 through 5</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 <p><strong>Response Codes</strong></p>
 <ul class="simple">
@@ -447,6 +463,126 @@ pagination (Page 1 is limit 50 offset 0, Page 2 is limit
 </tr>
 </tbody>
 </table>
+<div class="section" id="id3">
+<h3><code class="docutils literal notranslate"><span class="pre">/games</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Lists all recorded games.</p>
+<p><strong>Example output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nb">id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">game_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="n">daily_double</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="nb">round</span><span class="p">:</span> <span class="s2">&quot;J!&quot;</span><span class="p">,</span>
+        <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;2 VERBS IN ONE&quot;</span><span class="p">,</span>
+        <span class="n">game</span><span class="p">:</span> <span class="s2">&quot;To travel by taking rides from passing cars&quot;</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;hitchhike&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nb">id</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">game_id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="n">daily_double</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="nb">round</span><span class="p">:</span> <span class="s2">&quot;J!&quot;</span><span class="p">,</span>
+        <span class="n">category</span><span class="p">:</span> <span class="s2">&quot;TURNING TO SPORTS&quot;</span><span class="p">,</span>
+        <span class="n">game</span><span class="p">:</span> <span class="s2">&quot;In 201 a U.K. game of this sport went 50 hours non-stop--&quot;</span><span class="n">the</span> <span class="n">only</span> <span class="n">time</span> <span class="n">we</span> <span class="n">slept</span> <span class="n">was</span> <span class="n">when</span> <span class="n">our</span> <span class="n">team</span> <span class="n">was</span> <span class="n">batting</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;cricket&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Possible Query Parameters</strong></p>
+<ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?limit=&lt;int&gt;</span></code></dt><dd><ul class="simple">
+<li><p>Limits the response to a maximum of &lt;int&gt; games.</p></li>
+<li><p><strong>Set to 50 by default.</strong></p></li>
+<li><p><strong>Maximum of 1000.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?offset=&lt;int&gt;</span></code></dt><dd><ul class="simple">
+<li><p>Accesses the data starting from an offset of &lt;int&gt; places.</p></li>
+<li><p>Especially useful in conjunction with limit to achieve
+pagination (Page 1 is limit 50 offset 0, Page 2 is limit
+50 offset 50, etc.).</p></li>
+<li><p><strong>Set to 0 by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?order_by=&lt;field&gt;</span></code></dt><dd><ul class="simple">
+<li><p>Orders the data by the given field.</p></li>
+<li><p>For example, <code class="docutils literal notranslate"><span class="pre">?order_by=value</span></code> will order the returned
+games by their monetary value.</p></li>
+<li><p><strong>Set to id by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> or <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code></dt><dd><ul class="simple">
+<li><p>Used to change the direction of order_by results.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">?sort=asc</span></code> will order the results in ascending order, and <code class="docutils literal notranslate"><span class="pre">?sort=desc</span></code>
+will order the results in descending order.</p></li>
+<li><p><strong>Set to asc by default.</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p>Example Url:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">cluebase.lukelav.in/games?limit=100&amp;order_by=category&amp;sort=desc</span></code></p>
+</div></blockquote>
+<p>This call will return the last 100 games in lexicographic order.</p>
+</li>
+</ul>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got game list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Error getting game list.</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="games-int-id">
+<h3><code class="docutils literal notranslate"><span class="pre">/games/&lt;int:id&gt;</span></code><a class="headerlink" href="#games-int-id" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Information on the specific game with the given id.</p>
+<p><strong>Example output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="n">status</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">,</span>
+  <span class="n">data</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nb">id</span><span class="p">:</span> <span class="mi">450</span><span class="p">,</span>
+      <span class="n">episode_num</span><span class="p">:</span> <span class="mi">7601</span><span class="p">,</span>
+      <span class="n">season_id</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="n">air_date</span><span class="p">:</span> <span class="s2">&quot;2017-10-02&quot;</span><span class="p">,</span>
+      <span class="n">notes</span><span class="p">:</span> <span class="s2">&quot;Austin Rogers game 5.&quot;</span><span class="p">,</span>
+      <span class="n">contestant1</span><span class="p">:</span> <span class="mi">214</span><span class="p">,</span>
+      <span class="n">contestant2</span><span class="p">:</span> <span class="mi">856</span><span class="p">,</span>
+      <span class="n">contestant3</span><span class="p">:</span> <span class="mi">857</span><span class="p">,</span>
+      <span class="n">winner</span><span class="p">:</span> <span class="mi">856</span><span class="p">,</span>
+      <span class="n">score1</span><span class="p">:</span> <span class="mi">65600</span><span class="p">,</span>
+      <span class="n">score2</span><span class="p">:</span> <span class="mi">6400</span><span class="p">,</span>
+      <span class="n">score3</span><span class="p">:</span> <span class="mi">2000</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got game.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">404</span></code> : Game could not be retrieved.</p></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="contestants">
 <h2>Contestants<a class="headerlink" href="#contestants" title="Permalink to this headline">¶</a></h2>
@@ -487,8 +623,8 @@ pagination (Page 1 is limit 50 offset 0, Page 2 is limit
 </tr>
 </tbody>
 </table>
-<div class="section" id="id3">
-<h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3><code class="docutils literal notranslate"><span class="pre">/contestants</span></code><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><p>Lists all recorded contestants.</p>
 <p><strong>Example output</strong>:</p>
@@ -683,6 +819,17 @@ will order the results in descending order.</p></li>
 </tr>
 </tbody>
 </table>
+<div class="section" id="id5">
+<h3><code class="docutils literal notranslate"><span class="pre">/seasons</span></code><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Lists all seasons in the database.</p>
+<p><strong>Response Codes</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span></code> : Successfully got seasons list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">400</span></code> : Error getting list of seasons.</p></li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 <div class="section" id="util">
 <h2>Util<a class="headerlink" href="#util" title="Permalink to this headline">¶</a></h2>
@@ -739,12 +886,12 @@ be a valid number.</p>
 sure the provided <code class="docutils literal notranslate"><span class="pre">limit</span></code> query parameter is below the maximum for the endpoint.</p>
 <p><strong>Max Limit by Endpoint</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/clues</span></code> : TODO</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/categories</span></code> : TODO</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/games</span></code> : TODO</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/clues</span></code> : 1000</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/clues/random</span></code> : 100</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/categories</span></code> : 2000</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/games</span></code> : 1000</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/contestants</span></code> : 2000</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code> : 100</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/seasons</span></code> : No limit</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -837,15 +984,22 @@ be either “asc” or “desc”, for ascending or descending order, respective
 <li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">/categories</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#games">Games</a></li>
+<li><a class="reference internal" href="#games">Games</a><ul>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">/games</span></code></a></li>
+<li><a class="reference internal" href="#games-int-id"><code class="docutils literal notranslate"><span class="pre">/games/&lt;int:id&gt;</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#contestants">Contestants</a><ul>
-<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">/contestants</span></code></a></li>
 <li><a class="reference internal" href="#contestants-int-id"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;int:id&gt;</span></code></a></li>
 <li><a class="reference internal" href="#contestants-string-firstname-lastname"><code class="docutils literal notranslate"><span class="pre">/contestants/&lt;string:firstname_lastname&gt;</span></code></a></li>
 <li><a class="reference internal" href="#contestants-random"><code class="docutils literal notranslate"><span class="pre">/contestants/random</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#seasons">Seasons</a></li>
+<li><a class="reference internal" href="#seasons">Seasons</a><ul>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">/seasons</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#util">Util</a><ul>
 <li><a class="reference internal" href="#uptime"><code class="docutils literal notranslate"><span class="pre">/uptime</span></code></a></li>
 </ul>

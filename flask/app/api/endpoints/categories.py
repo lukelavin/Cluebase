@@ -37,6 +37,7 @@ def get_categories(limit, offset):
                 .offset(offset)
                 .all())]
 
+# TODO: Search
 class CategoriesList(Resource):
     def get(self):
         limit = request.args.get('limit', 50)
