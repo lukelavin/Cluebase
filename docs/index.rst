@@ -20,8 +20,8 @@ Cluebase was originally intended to be the backend for a personal project that
 allowed you to practice for the *Jeopardy!* online exam using previously aired
 clues. If I ever get around to doing that, I'll leave a link here.
 
-.. _J-Archive: www.j-archive.com
-.. _`available on Github`: github.com/lukelavin/cluebase
+.. _J-Archive: http://www.j-archive.com
+.. _`available on Github`: https://github.com/lukelavin/cluebase
 
 General Info
 ===============
