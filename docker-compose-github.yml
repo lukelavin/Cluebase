@@ -13,8 +13,8 @@ services:
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=app.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/jeopardy
-      - DATABASE_TEST_URL=postgres://postgres:postgres@postgres:5432/jeopardy_test
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/jeopardy
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@postgres:5432/jeopardy_test
     depends_on:
       - postgres
 
@@ -29,3 +29,19 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile-prod
+    ports:
+      - 80:80
+    depends_on:
+      - flask
+
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    ports:
+      - 6379:6379
